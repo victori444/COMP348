@@ -5,6 +5,6 @@
 #ifndef COMP348_A1_FILEREAD_H
 #define COMP348_A1_FILEREAD_H
 
-void readFile(FILE *filePtr, char **words, int *nbWords, char *wordType, char *skipWords[], int nbSkipWords);
+int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *skipWords[], int nbSkipWords);
 
 #endif //COMP348_A1_FILEREAD_H

@@ -25,13 +25,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // array size n
-    int n = atoi(argv[2]);
-    if (n <= 0) {
-        fprintf(stderr, "Invalid array size.");
-        return 1;
-    }
-
     // wordtype
     char *wordType = argv[3];
 
@@ -50,14 +43,21 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // array size n
+    int arraySize = atoi(argv[2]);
+    if (arraySize <= 0) {
+        fprintf(stderr, "Invalid array size.");
+        return 1;
+    }
+
     // word array
     // add exception handling if arraySize input is not an integer or < 0
-    char **wordArray = malloc(n * sizeof(char *));
+    char **wordArray = malloc(arraySize * sizeof(char *));
 
     // amount of valid words added to array
-    int *nbWords = 0;
-    readFile(filePtr, wordArray, nbWords, wordType, skipWords, nbSkipWords);
-    printf("%d", *nbWords);
+    int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords);
+
+
 
     return 0;
 }

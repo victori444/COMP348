@@ -30,26 +30,31 @@ void addToArray(char *word, char **words, int *nbWords, char *skipWords[], int n
     }
 }
 
-void readFile(FILE *filePtr, char **words, int *nbWords, char *wordType, char *skipWords[], int nbSkipWords) {
+int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *skipWords[], int nbSkipWords) {
     // input: pointer to array of size n & array size n
     // output: array of size n containing pointers to strings
 
+    int nbWords = 0;
     char buffer[100];
     char whitespace[100];
     char charToDiscard[100];
 
     processInputWordType(wordType, whitespace, charToDiscard);
 
-    while (fscanf(filePtr, whitespace, buffer) == 1) {
-//        printf("%s\n", buffer);
+    // array size n
+
+    while (fscanf(filePtr, whitespace, buffer) == 1 || nbWords <= arraySize) {
+        printf("%s\t", buffer);
         int notSkipWord = 1;
         for (int i = 0; i < nbSkipWords; i++) {
             if (strcmp(buffer, skipWords[i]) == 0) {
                 notSkipWord = 0;
+                break;
             }
         }
         if (notSkipWord) {
-            words[*nbWords++] = buffer;
+            printf("here!!\n");
+            words[nbWords++] = strdup(buffer);
         }
 
         // discard unwanted chars until hit desired char (for next word)
@@ -57,5 +62,5 @@ void readFile(FILE *filePtr, char **words, int *nbWords, char *wordType, char *s
 
     }
     fclose(filePtr);
-
+    return nbWords;
 }
