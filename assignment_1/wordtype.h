@@ -5,6 +5,6 @@
 #ifndef WORDTYPE_H
 #define WORDTYPE_H
 
-int processInputWordType(const char *inputWordType, const char *word);
+void processInputWordType(const char *inputWordType, char *whitespace, char *charToSkip);
 
 #endif //COMP348_A1_WORDTYPE_H

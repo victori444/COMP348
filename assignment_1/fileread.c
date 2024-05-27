@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "fileread.h"
+#include "wordtype.h"
 
 // separate according to word type (alpha = 1, alphanum = 2, all = 3)
 // check if == to skipwords
@@ -29,43 +30,32 @@ void addToArray(char *word, char **words, int *nbWords, char *skipWords[], int n
     }
 }
 
-int readFile(FILE *filePtr, char **words, char *wordType, char *skipWords[], int nbSkipWords) {
+void readFile(FILE *filePtr, char **words, int *nbWords, char *wordType, char *skipWords[], int nbSkipWords) {
     // input: pointer to array of size n & array size n
     // output: array of size n containing pointers to strings
 
-    char buffer[1000];
-    int nbWords = 0;
+    char buffer[100];
+    char whitespace[100];
+    char charToDiscard[100];
 
+    processInputWordType(wordType, whitespace, charToDiscard);
 
-
-    while (fscanf(filePtr, ))
-
-    while (fgets(buffer, sizeof(buffer), filePtr)) {
-        char *token;
-        if (strcmp(wordType, "ALL") == 0) {
-            token = strtok(buffer, "\t\n\v\f\r,");
-        } else if (strcmp(wordType, "ALPHA") == 0) {
-            for (char *i = buffer; *i; i++) {
-                if (!isalpha(*i)) *i = ' ';
-            }
-            token = strtok(buffer, "\t\n\v\f\r,");
-        } else if (strcmp(wordType, "ALPHANUM") == 0) {
-            for (char *i = buffer; *i; i++) {
-                if (!isalnum(*i)) *i = ' ';
-            }
-            token = strtok(buffer, "\t\n\v\f\r,");
-        }
-
-        while (token) {
-            addToArray(token, words, &nbWords, skipWords, nbSkipWords);
-            if (strcmp(wordType, "ALL") == 0) {
-                token = strtok(NULL, " \t\n\v\f\r,");
-            } else {
-                token = strtok(NULL, " \t\n\v\f\r");
+    while (fscanf(filePtr, whitespace, buffer) == 1) {
+//        printf("%s\n", buffer);
+        int notSkipWord = 1;
+        for (int i = 0; i < nbSkipWords; i++) {
+            if (strcmp(buffer, skipWords[i]) == 0) {
+                notSkipWord = 0;
             }
         }
+        if (notSkipWord) {
+            words[*nbWords++] = buffer;
+        }
+
+        // discard unwanted chars until hit desired char (for next word)
+        fscanf(filePtr, charToDiscard, buffer);
+
     }
     fclose(filePtr);
-    return nbWords;
 
 }

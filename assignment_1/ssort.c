@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     // input file
     FILE *filePtr = fopen(argv[1], "r");
     if (filePtr == NULL) {
-        printf("Error opening file %", argv[1]);
+        printf("Error opening file %s", argv[1]);
         return 1;
     }
 
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]) {
     char **wordArray = malloc(n * sizeof(char *));
 
     // amount of valid words added to array
-    int nbWords = readFile(filePtr, wordArray, wordType, skipWords, nbSkipWords);
-
-    // FILE PROCESSING
+    int *nbWords = 0;
+    readFile(filePtr, wordArray, nbWords, wordType, skipWords, nbSkipWords);
+    printf("%d", *nbWords);
 
     return 0;
 }

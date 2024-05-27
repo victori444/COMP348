@@ -13,28 +13,21 @@
  * if wordtype = ALL -> non-whitespace (blank, tab, null, newline) & non-commas => char == ' ' / ',' / '\t' / '\n'
  * */
 
-int processInputWordType(const char *word, const char *inputWordType) {
+void processInputWordType(const char *inputWordType, char *whitespace, char *charToDiscard) {
 
     char alpha[] = "ALPHA";
     char alphanum[] = "ALPHANUM";
     char all[] = "ALL";
 
     if (strcmp(inputWordType, alpha) == 0) {
-        for (int i = 0; word[i] != '\0'; ++i) {
-            if (!isalpha(word[i])) {
-                return 0;
-            }
-        }
-        return 1;
+        strcpy(whitespace, "%[^ 123456789!@#$%^&*(){}[]|\\\t\n\v\r,]");
+        strcpy(charToDiscard, "%*[ 123456789!@#$%^&*(){}[]|\\\t\n\v\r,]");
     } else if (strcmp(inputWordType, alphanum) == 0) {
-        for (int i = 0; word[i] != '\0'; ++i) {
-            if (!isalnum(word[i])) {
-                return 0;
-            }
-        }
-        return 1;
+        strcpy(whitespace, "%[^ !@#$%^&*(){}[]|\\\t\n\v\r,]");
+        strcpy(charToDiscard, "%*[ !@#$%^&*(){}[]|\\\t\n\v\r,]");
     } else if (strcmp(inputWordType, all) == 0) {
-        return 1;
+        strcpy(whitespace, "%[^ , \t\n\v\r]");
+        strcpy(charToDiscard, "%*[ , \t\n\v\r]");
     } else {
         printf("Invalid word type: %s", inputWordType);
         exit(2);
