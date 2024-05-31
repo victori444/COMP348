@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     // array of words size
     int arraySize = atoi(argv[2]);
-    if (arraySize <= 0) { // non positive / non integer value
+    if (arraySize <= 0) {
         // free memory
         fclose(filePtr);
         arraySizeError();
