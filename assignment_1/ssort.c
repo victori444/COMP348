@@ -11,25 +11,28 @@ int main(int argc, char *argv[]) {
 
     if (argc < 4) {
         fprintf(stderr, "Invalid amount of inputs. Format: %s <inputFile> <n> <wordtype> <sorttype> [<skipword1>, <skipword2>, ...]\n", argv[0]);
-        return 1;
+        exit(1);
     }
 
     // input file
     FILE *filePtr = fopen(argv[1], "r");
     if (filePtr == NULL) {
+        fclose(filePtr);
         fileError();
     }
 
     // array of words size
     int arraySize = atoi(argv[2]);
     if (arraySize <= 0) { // non positive / non integer value
+        // free memory
+        fclose(filePtr);
         arraySizeError();
     }
 
-    // wordtype
+    // word type
     char *wordType = argv[3];
 
-    // sorttype
+    // sort type
     char *sortType;
     if (argc == 4) {
         sortType = "ASC";
@@ -41,7 +44,7 @@ int main(int argc, char *argv[]) {
         sortType = "ASC";
     }
 
-    // array of skipwords
+    // array of skip words
     char *skipWords[100];
     int nbSkipWords = 0;
     if (argc > 5) {
@@ -59,6 +62,7 @@ int main(int argc, char *argv[]) {
     printWordArray((const char **) wordArray, nbWords);
 
     // free memory
+    fclose(filePtr);
     free(wordArray);
     for (int i = 0; i < nbWords; i++) {
         free(wordArray[i]);

@@ -55,6 +55,5 @@ int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *s
     // sort array according to sort type
     sort((const char **) words, nbWords, sortType);
 
-    fclose(filePtr);
     return nbWords;
 }
