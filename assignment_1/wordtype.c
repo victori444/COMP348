@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include "output.h"
 
 /* if wordtype = ALPHA -> word = [a-z] & [A-Z] => isalpha(char)
  * if wordtype = ALPHANUM -> word = [a-z] & [A-Z] & numbers => isalnum(char)
@@ -29,8 +29,7 @@ void processInputWordType(const char *inputWordType, char *whitespace, char *cha
         strcpy(whitespace, "%[^ , \t\n\v\r]");
         strcpy(charToDiscard, "%*[ , \t\n\v\r]");
     } else {
-        printf("Invalid word type: %s", inputWordType);
-        exit(2);
+        wordTypeError();
     }
 
 }

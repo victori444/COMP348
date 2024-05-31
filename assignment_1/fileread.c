@@ -3,34 +3,29 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "fileread.h"
 #include "wordtype.h"
 
-// separate according to word type (alpha = 1, alphanum = 2, all = 3)
-// check if == to skipwords
-// add to array length n
-// return array size n
-
-int isSkipWord(const char *word, char *skipWords[], int nbSkipWords) {
-    for (int i = 0; i < nbSkipWords; ++i) {
-        if (strcmp(word, skipWords[i]) == 0) {
-            printf("Here");
-            return 1;
-        }
-    }
-    return 0;
+static int compareAscending(const void* a, const void* b) {
+    return strcmp(*(const char**)a, *(const char**)b);
 }
 
-void addToArray(char *word, char **words, int *nbWords, char *skipWords[], int nbSkipWords) {
-    if (!isSkipWord(word, skipWords, nbSkipWords)) {
-        words[*nbWords] = strdup(word);
-        (*nbWords)++;
+static int compareDescending(const void* a, const void* b) {
+    return strcmp(*(const char**)b, *(const char**)a);
+}
+
+void sort(const char* arr[], int n, char *sortType) {
+    if (strcmp(sortType, "DESC") == 0) {
+        qsort(arr, n, sizeof(const char*), compareDescending);
+    } else {
+        qsort(arr, n, sizeof(const char*), compareAscending);
     }
 }
 
-int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *skipWords[], int nbSkipWords) {
+int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *skipWords[], int nbSkipWords, char *sortType) {
     // input: pointer to array of size n & array size n
     // output: array of size n containing pointers to strings
 
@@ -41,10 +36,8 @@ int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *s
 
     processInputWordType(wordType, whitespace, charToDiscard);
 
-    // array size n
-
-    while (fscanf(filePtr, whitespace, buffer) == 1 || nbWords <= arraySize) {
-        printf("%s\t", buffer);
+    // add to array if not a skipword
+    while (fscanf(filePtr, whitespace, buffer) == 1 && nbWords < arraySize) {
         int notSkipWord = 1;
         for (int i = 0; i < nbSkipWords; i++) {
             if (strcmp(buffer, skipWords[i]) == 0) {
@@ -53,14 +46,16 @@ int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *s
             }
         }
         if (notSkipWord) {
-            printf("here!!\n");
             words[nbWords++] = strdup(buffer);
         }
 
         // discard unwanted chars until hit desired char (for next word)
         fscanf(filePtr, charToDiscard, buffer);
-
     }
+
+    // sort array according to sort type
+    sort((const char **) words, nbWords, sortType);
+
     fclose(filePtr);
     return nbWords;
 }

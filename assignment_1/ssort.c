@@ -6,11 +6,12 @@
 #include <string.h>
 #include "ssort.h"
 #include "fileread.h"
+#include "output.h"
 
 // argc: number of values passed to command line incl. program name !!
 // argv: array of char pointers listing all arguments (> 0 => argv[0:argc - 1] = array of pointers to strings
 // argv[0] = name of program
-// argv = {programName, fileName, array size n, wordtype, sorttype, skipkeywords...}
+// argv = {programName, fileName, array size n, wordtype, sorttype, skipwords...}
 int main(int argc, char *argv[]) {
 
     if (argc < 4) {
@@ -21,8 +22,13 @@ int main(int argc, char *argv[]) {
     // input file
     FILE *filePtr = fopen(argv[1], "r");
     if (filePtr == NULL) {
-        printf("Error opening file %s", argv[1]);
-        return 1;
+        fileError();
+    }
+
+    // array of words size
+    int arraySize = atoi(argv[2]);
+    if (arraySize <= 0) { // non positive / non integer value
+        arraySizeError();
     }
 
     // wordtype
@@ -30,9 +36,15 @@ int main(int argc, char *argv[]) {
 
     // sorttype
     char *sortType;
-    if (argc == 4) sortType = "ASC";
-    else if (strcmp(argv[4], "DESC") == 0) sortType = "DESC";
-    else sortType = "ASC";
+    if (argc == 4) {
+        sortType = "ASC";
+    }
+    else if (strcmp(argv[4], "DESC") == 0) {
+        sortType = "DESC";
+    }
+    else {
+        sortType = "ASC";
+    }
 
     // array of skipwords
     char *skipWords[100];
@@ -43,21 +55,15 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // array size n
-    int arraySize = atoi(argv[2]);
-    if (arraySize <= 0) {
-        fprintf(stderr, "Invalid array size.");
-        return 1;
-    }
-
     // word array
-    // add exception handling if arraySize input is not an integer or < 0
     char **wordArray = malloc(arraySize * sizeof(char *));
 
     // amount of valid words added to array
-    int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords);
+    int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords, sortType);
 
+    printWordArray(wordArray, nbWords);
 
+    free(wordArray);
 
     return 0;
 }
