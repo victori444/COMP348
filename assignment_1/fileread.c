@@ -46,6 +46,14 @@ int readFile(FILE *filePtr, char **words, int arraySize, char *wordType, char *s
         }
         if (notSkipWord) {
             words[nbWords++] = strdup(buffer);
+            if (words[nbWords] == NULL) {
+                // strdup failure, free allocated memory
+                for (int i = 0; i < nbWords; i++) {
+                    free(words[i]);
+                }
+                fclose(filePtr);
+                return nbWords;
+            }
         }
 
         // discard unwanted chars until hit desired char (for next word)

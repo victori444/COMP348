@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
     if (argc < 4) {
         fprintf(stderr, "Invalid amount of inputs. Format: %s <inputFile> <n> <wordtype> <sorttype> [<skipword1>, <skipword2>, ...]\n", argv[0]);
-        exit(1);
+        return 1;
     }
 
     // input file
@@ -55,6 +55,11 @@ int main(int argc, char *argv[]) {
 
     // word array
     char **wordArray = malloc(arraySize * sizeof(char *));
+    if (wordArray == NULL) {
+        fclose(filePtr);
+        fprintf(stderr, "Memory Allocation Failure");
+        return 1;
+    }
 
     // amount of valid words added to array
     int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords, sortType);
@@ -63,10 +68,10 @@ int main(int argc, char *argv[]) {
 
     // free memory
     fclose(filePtr);
-    free(wordArray);
     for (int i = 0; i < nbWords; i++) {
         free(wordArray[i]);
     }
+    free(wordArray);
 
     return 0;
 }
