@@ -6,8 +6,8 @@
 #define COMP348_A1_OUTPUT_H
 
 void printWordArray(const char **words, int nbWords);
-int fileError();
-int arraySizeError();
-int wordTypeError();
+void fileError();
+void arraySizeError();
+void wordTypeError();
 
 #endif //COMP348_A1_OUTPUT_H

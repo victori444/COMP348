@@ -3,6 +3,7 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "output.h"
 
 void printWordArray(const char **words, int nbWords) {
@@ -15,18 +16,17 @@ void printWordArray(const char **words, int nbWords) {
         count++;
     }
 }
-
 // Error messages
-int fileError() {
+void fileError() {
     fprintf(stderr, "Error opening file");
-    return 1;
+    exit(1);
 }
-int arraySizeError() {
+void arraySizeError() {
     fprintf(stderr, "Error code 1: Invalid array size.");
-    return 1;
+    exit(1);
 }
-int wordTypeError() {
+void wordTypeError() {
     fprintf(stderr,"Error code 2: Invalid word type");
-    return 2;
+    exit(2);
 }
 

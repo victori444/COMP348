@@ -4,14 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ssort.h"
 #include "fileread.h"
 #include "output.h"
 
-// argc: number of values passed to command line incl. program name !!
-// argv: array of char pointers listing all arguments (> 0 => argv[0:argc - 1] = array of pointers to strings
-// argv[0] = name of program
-// argv = {programName, fileName, array size n, wordtype, sorttype, skipwords...}
 int main(int argc, char *argv[]) {
 
     if (argc < 4) {
@@ -60,10 +55,14 @@ int main(int argc, char *argv[]) {
 
     // amount of valid words added to array
     int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords, sortType);
-
+    // output
     printWordArray((const char **) wordArray, nbWords);
 
+    // free memory
     free(wordArray);
+    for (int i = 0; i < nbWords; i++) {
+        free(wordArray[i]);
+    }
 
     return 0;
 }
