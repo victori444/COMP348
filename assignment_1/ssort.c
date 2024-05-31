@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     // amount of valid words added to array
     int nbWords = readFile(filePtr, wordArray, arraySize, wordType, skipWords, nbSkipWords, sortType);
 
-    printWordArray(wordArray, nbWords);
+    printWordArray((const char **) wordArray, nbWords);
 
     free(wordArray);
 
