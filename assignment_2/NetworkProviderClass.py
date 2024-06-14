@@ -148,23 +148,32 @@ class NetworkProvider:
         pointDict = {}
         totalPossiblePoints = 0
 
+        lat_range = [round(self.min_lat + i * self.step, 2) for i in range(int((self.max_lat - self.min_lat) / self.step) + 1)]
+        lon_range = [round(self.min_lon + i * self.step, 2) for i in range(int((self.max_lon - self.min_lon) / self.step) + 1)]
+
+        # add endpoints
+        if round(self.max_lat, 2) not in lat_range:
+            lat_range.append(round(self.max_lat, 2))
+        if round(self.max_lon, 2) not in lon_range:
+            lon_range.append(round(self.max_lon, 2))
+
+        for lat in lat_range:
+            for lon in lon_range:
+                totalPossiblePoints += 1
+                pointDict[(lat, lon)] = 0
+
         for station in self.baseStations:
             for antenna in station.antennas:
                 for point in antenna.pts:
                     pointTuple = (point[0], point[1])
                     if pointTuple in pointDict:
                         pointDict[pointTuple] += 1
-                    else:
-                        pointDict[pointTuple] = 1
 
-        latRange = int((self.max_lat - self.min_lat) / self.step) + 1
-        lonRange = int((self.max_lon - self.min_lon) / self.step) + 1
+        totalPointsCovered = 0
+        for pointCount in pointDict.values():
+            if pointCount > 0:
+                totalPointsCovered += 1
 
-        for lat in range(latRange):
-            for lon in range(lonRange):
-                totalPossiblePoints += 1
-
-        totalPointsCovered = len(pointDict)
         percentage = (totalPointsCovered / totalPossiblePoints) * 100
         return totalPointsCovered, totalPossiblePoints, percentage
         
@@ -253,19 +262,20 @@ class NetworkProvider:
         totalPointsCovered = None
         percentage = None
 
-        def frange(start, stop, step):
-            while start <= stop:
-                yield start
-                start += step
+        lat_range = [round(self.min_lat + i * self.step, 2) for i in range(int((self.max_lat - self.min_lat) / self.step) + 1)]
+        lon_range = [round(self.min_lon + i * self.step, 2) for i in range(int((self.max_lon - self.min_lon) / self.step) + 1)]
 
-        for lat in frange(self.min_lat, self.max_lat, self.step):
-            for lon in frange(self.min_lon, self.max_lon, self.step):
-                totalPossiblePoints += 1
+        # add endpoints
+        if round(self.max_lat, 2) not in lat_range:
+            lat_range.append(round(self.max_lat, 2))
+        if round(self.max_lon, 2) not in lon_range:
+            lon_range.append(round(self.max_lon, 2))
 
         for station in self.baseStations:
             if station.id == stationID:
-                totalPointsCovered = station.percentageCoveredArea(totalPossiblePoints)[0]
-                percentage = station.percentageCoveredArea(totalPossiblePoints)[1]
+                totalPossiblePoints = station.percentageCoveredArea(lat_range, lon_range)[0]
+                totalPointsCovered = station.percentageCoveredArea(lat_range, lon_range)[1]
+                percentage = station.percentageCoveredArea(lat_range, lon_range)[2]
 
         return totalPointsCovered, totalPossiblePoints, percentage
         

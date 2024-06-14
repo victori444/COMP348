@@ -109,18 +109,24 @@ class BaseStation:
         avg = totalNbPoints / len(pointDict)
         return avg
     
-    def percentageCoveredArea(self, totalPossiblePoints):
+    def percentageCoveredArea(self, latRange, lonRange):
         pointDict = {}
+        totalPossiblePoints = 0
+
+        for lat in latRange:
+            for lon in lonRange:
+                totalPossiblePoints += 1
+                pointDict[(lat, lon)] = 0
+
         for antenna in self.antennas:
             for point in antenna.pts:
                 pointTuple = (point[0], point[1])
                 if pointTuple in pointDict:
                     pointDict[pointTuple] += 1
-                else:
-                    pointDict[pointTuple] = 1
+
         totalPointsCovered = len(pointDict)
         percentage = (totalPointsCovered / totalPossiblePoints) * 100
-        return totalPointsCovered, percentage
+        return totalPossiblePoints, totalPointsCovered, percentage
     
     def antennaCoveringMostPoints(self):
         mostCoveredPoints = 0

@@ -76,9 +76,14 @@ def main():
                 try:
                     stationID = int(stationID)
                 except:
-                    print("Invalid stationID. Please enter an integer.")
+                    print("Invalid base station ID. Please enter an integer.")
+                    continue
+                if stationID < 1 or stationID > len(networkProvider.baseStations):
+                    print(f"Invalid base station ID. Please enter an integer between 1 and {len(networkProvider.baseStations)}")
                     continue
                 menuDisplays.displayStation(networkProvider, stationID)
+            else:
+                print("Invalid submenu choice, please enter a number between 1 and 2")
             
         elif menuChoice == 3:
             # check coverage
