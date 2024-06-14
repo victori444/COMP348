@@ -124,7 +124,12 @@ class BaseStation:
                 if pointTuple in pointDict:
                     pointDict[pointTuple] += 1
 
-        totalPointsCovered = len(pointDict)
+        totalPointsCovered = 0
+
+        for pointCount in pointDict.values():
+            if pointCount > 0:
+                totalPointsCovered += 1
+                
         percentage = (totalPointsCovered / totalPossiblePoints) * 100
         return totalPossiblePoints, totalPointsCovered, percentage
     

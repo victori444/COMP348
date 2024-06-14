@@ -178,7 +178,6 @@ class NetworkProvider:
         return totalPointsCovered, totalPossiblePoints, percentage
         
     def stationAndAntennaCoveringMostPoints(self):
-        pointDict = {}
         mostCoveredPoints = 0
         idBaseStation = None
         idAntenna = None
@@ -193,16 +192,13 @@ class NetworkProvider:
 
         return idBaseStation, idAntenna
 
-    # ############################################# #
     # ##### BASE STATION STATISTICS FUNCTIONS ##### #
-    # ############################################# #
 
     def station_TotalNbAntennas(self, stationID):
         for station in self.baseStations:
             if station.id == stationID:
                 return station.nbAntennas()
         return 100000
-        # error if stationID not found
         
     def station_PointsCoveredByAntennaOnce(self, stationID):
         totalPointsCoveredOnce = None
@@ -221,8 +217,6 @@ class NetworkProvider:
         
         return totalPointsCoveredMul
     
-    # not sure if frange is different for a single base station
-    # as compared to frange for all base stations?
     def station_PointsNotCoveredByAntenna(self, stationID):
         totalPossiblePoints = 0
 
@@ -288,9 +282,7 @@ class NetworkProvider:
 
         return idAntenna
     
-    # ############################################# #
     # #####             COVERAGE              ##### #
-    # ############################################# #
 
     def coverage(self, lat, lon):
         pointCovered = False

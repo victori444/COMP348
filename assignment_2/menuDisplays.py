@@ -26,6 +26,8 @@ def displayStation(networkProvider, stationID):
     print(f"The percentage of the covered area = 100 x ({networkProvider.station_PercentageCoveredArea(stationID)[0]} / {networkProvider.station_PercentageCoveredArea(stationID)[1]}) = {networkProvider.station_PercentageCoveredArea(stationID)[2]:.2f}%")
     print(f"The ID of the antenna that covers the maximum number of points = {networkProvider.station_antennaCoveringMostPoints(stationID)}")
 
+# COVERAGE
+
 def displayCoverage(networkProvider, latitude, longitude):
     print(f"""\n+-------------------------------------------------------------------------+
         Stations, antennas, and received powers for ({latitude}, {longitude})

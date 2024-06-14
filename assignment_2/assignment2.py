@@ -99,6 +99,7 @@ def main():
             menuDisplays.displayCoverage(networkProvider, latitude, longitude)
 
         elif menuChoice == 4:
+            # exit program
             print("Goodbye!\n")
             sys.exit(0)
         else:
