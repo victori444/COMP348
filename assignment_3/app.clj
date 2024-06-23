@@ -1,9 +1,7 @@
 (ns app
-  (:require [db])
   (:require [menu]))
 
-(defn hello
-  []
-  (print "Hi"))
+(defn -main []
+  (menu/menu))
 
-(hello)
+(-main)
