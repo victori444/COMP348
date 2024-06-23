@@ -37,7 +37,7 @@
      (println "Display size, population, land area, population density for" city_name)))
 
 
-(defn option 3
+(defn option3
 ; Replace the println expression your own code
   [] ;parm(s) can be provided here, if needed
   (println "List all provinces with total number of cities"))
