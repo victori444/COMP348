@@ -1,4 +1,4 @@
-(ns a3
+(ns menu
   (:require [clojure.string :as str])
   (:require [clojure.java.io :as io]))
   ; this is where you would also include/require the compress module
@@ -25,7 +25,7 @@
   (println "this is a place holder for option 1, you may use a sub-menu for options 1.1, 1.2, or 1.3"))
 ; 1.1 List all cities in the file, ordered by name
 ; 1.2. List all cities of a given province order by size and name
-; 1.3. List all cities of a given province ordered by population desity in ascending order
+; 1.3.  all cities of a given province ordered by population desity in ascending order
     
     
 ; Replace the println expression your own code
@@ -37,7 +37,7 @@
      (println "Display size, population, land area, population density for" city_name)))
 
 
-
+(defn option 3
 ; Replace the println expression your own code
   [] ;parm(s) can be provided here, if needed
   (println "List all provinces with total number of cities"))
